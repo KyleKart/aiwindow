@@ -1,0 +1,340 @@
+<html w-tid="0"><head w-tid="1"><base href="" w-tid="2">
+<title w-tid="3">NostalgiaChat</title>
+<style w-tid="4">
+body {
+  font-family: Segoe UI, Tahoma, sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.main-window, .changelog-window, .info-window {
+  background: linear-gradient(to bottom, #e6e6e6, #d9d9d9);
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+}
+.main-window {
+  width: 600px;
+  height: 500px;
+}
+.main-window.maximized {
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+.changelog-window {
+  top: 20px;
+  right: 20px;
+  width: 250px;
+  height: 300px;
+}
+.info-window {
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  height: 300px;
+}
+.title-bar {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  cursor: move;
+  user-select: none;
+  height: 22.5pt;
+  font-size: 9pt;
+}
+.title-content {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.title-bar img {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+.window-controls {
+  display: flex;
+  height: 100%;
+}
+.window-control {
+  width: 33.75pt;
+  height: 22.5pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.window-control:hover {
+  background-color: rgba(0,0,0,0.1);
+}
+.close-button:hover {
+  background-color: #e81123;
+  color: white;
+}
+.menu-bar {
+  background: linear-gradient(to bottom, #f0f0f0, #e5e5e5);
+  padding: 4px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  gap: 10px;
+}
+.menu-bar select {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 0px;
+}
+.chat-area {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #fff;
+}
+.input-area {
+  display: flex;
+  padding: 10px;
+  background: linear-gradient(to bottom, #e6e6e6, #d9d9d9);
+  border-top: 1px solid #ccc;
+}
+.input-area textarea {
+  flex-grow: 1;
+  height: 60px;
+  resize: none;
+  padding: 5px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.button {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+  background: linear-gradient(to bottom, #f5f5f5, #e6e6e6);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.button:active {
+  background: linear-gradient(to bottom, #e6e6e6, #f5f5f5);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.message {
+  margin-bottom: 10px;
+}
+.message .sender {
+  font-weight: bold;
+  color: #0066cc;
+}
+.message .content {
+  margin-left: 10px;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(5px); }
+  50% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+.shake {
+  animation: shake 0.5s;
+}
+.emoticon-menu {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+.emoticon-menu button {
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.toolbar {
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  background: linear-gradient(to bottom, #f0f0f0, #e5e5e5);
+  border-bottom: 1px solid #ccc;
+}
+.toolbar button {
+  background: linear-gradient(to bottom, #f5f5f5, #e6e6e6);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0px 0px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+}
+.toolbar button:active {
+  background: linear-gradient(to bottom, #e6e6e6, #f5f5f5);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+#fileInput {
+  display: none;
+}
+.changelog-content, .info-content {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #fff;
+}
+.changelog-entry {
+  margin-bottom: 10px;
+}
+.changelog-version {
+  font-weight: bold;
+}
+.dark-mode {
+  background: #333;
+  color: #fff;
+}
+.dark-mode .main-window,
+.dark-mode .changelog-window,
+.dark-mode .info-window {
+  background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+  border-color: #444;
+}
+.dark-mode .title-bar {
+  background: black;
+  color: white;
+}
+.dark-mode .window-control:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+.dark-mode .close-button:hover {
+  background-color: #e81123;
+  color: white;
+}
+.dark-mode .menu-bar,
+.dark-mode .toolbar,
+.dark-mode .input-area {
+  background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+  border-color: #555;
+}
+.dark-mode .chat-area,
+.dark-mode .changelog-content,
+.dark-mode .info-content {
+  background: #222;
+}
+.dark-mode .input-area textarea {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+}
+.dark-mode .button,
+.dark-mode .toolbar button {
+  background: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+  border-color: #555;
+  color: #fff;
+}
+.dark-mode .button:active,
+.dark-mode .toolbar button:active {
+  background: linear-gradient(to bottom, #3a3a3a, #4a4a4a);
+}
+.dark-mode .message .sender {
+  color: #66b3ff;
+}
+.typing-indicator {
+  display: none;
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-top: 1px solid #ccc;
+  font-style: italic;
+  color: #666;
+}
+.dark-mode .typing-indicator {
+  background: #444;
+  color: #ccc;
+  border-color: #555;
+}
+@keyframes blink {
+  50% { opacity: 1; }
+}
+.typing-indicator::after {
+  content: '...';
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+.info-content h3 {
+  margin-top: 0;
+  color: #0078D7;
+}
+.dark-mode .info-content h3 {
+  color: #66b3ff;
+}
+.info-content p {
+  margin-bottom: 10px;
+}
+.info-content .quote {
+  font-style: italic;
+  color: #666;
+  border-left: 3px solid #0078D7;
+  padding-left: 10px;
+  margin-top: 10px;
+}
+.dark-mode .info-content .quote {
+  color: #ccc;
+  border-left-color: #66b3ff;
+}
+.system-message {
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+}
+.dark-mode .system-message {
+  color: #999;
+}
+</style>
+</head>
+<body w-tid="5">
+<div class="info-window" id="infoWindow" w-tid="6">
+  <div class="title-bar" w-tid="7">
+    <div class="title-content" w-tid="8">
+      <span w-tid="9">About this.</span>
+    </div>
+    <div class="window-controls" w-tid="10">
+      <div class="window-control close-button" id="closeInfoButton" w-tid="11">✕</div>
+    </div>
+  </div>
+  <div class="info-content" w-tid="12">
+    <h3 w-tid="13">About this project.</h3>
+    <p w-tid="14">This is an AI window creator. This AI will make windows content for anything that you want!</p>
+    <p w-tid="15">Its creator is Elmo Bear.</p>
+  </div>
+</div>
