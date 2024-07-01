@@ -1,12 +1,12 @@
-<div class="main-window" id="messenger" w-tid="18">
+<div class="main-window" id="windowsMain" w-tid="18">
   <div class="title-bar" id="titleBar" w-tid="19">
     <div class="title-content" w-tid="20">
       <span w-tid="22">Windows Name Goes Here</span>
     </div>
     <div class="window-controls" w-tid="23">
-      <div class="window-control" id="minimizeButton" w-tid="24">–</div>
-      <div class="window-control" id="maximizeButton" w-tid="25">☐</div>
-      <div class="window-control close-button" id="closeButton" w-tid="26">✕</div>
+      <div class="window-control" id="minimizeButton" w-tid="24">-</div>
+      <div class="window-control" id="maximizeButton" w-tid="25">O</div>
+      <div class="window-control close-button" id="closeButton" w-tid="26">X</div>
     </div>
   </div>
   <div class="menu-bar" w-tid="27">
