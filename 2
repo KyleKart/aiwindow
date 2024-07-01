@@ -1,0 +1,162 @@
+<script w-tid="80">
+const chatArea = document.getElementById('chatArea');
+const userInput = document.getElementById('userInput');
+const sendButton = document.getElementById('sendButton');
+const nudgeButton = document.getElementById('nudgeButton');
+const fileMenu = document.getElementById('fileMenu');
+const actionsMenu = document.getElementById('actionsMenu');
+const optionsMenu = document.getElementById('optionsMenu');
+const messenger = document.getElementById('messenger');
+const emoticonButton = document.getElementById('emoticonButton');
+const emoticonMenu = document.getElementById('emoticonMenu');
+const fileButton = document.getElementById('fileButton');
+const fileInput = document.getElementById('fileInput');
+const darkModeButton = document.getElementById('darkModeButton');
+const titleBar = document.getElementById('titleBar');
+const minimizeButton = document.getElementById('minimizeButton');
+const maximizeButton = document.getElementById('maximizeButton');
+const closeButton = document.getElementById('closeButton');
+const changelogWindow = document.getElementById('changelogWindow');
+const closeChangelogButton = document.getElementById('closeChangelogButton');
+const typingIndicator = document.getElementById('typingIndicator');
+const infoWindow = document.getElementById('infoWindow');
+const closeInfoButton = document.getElementById('closeInfoButton');
+
+const emoticons = ['😊','😂','😍','😎','😘','🤔','😢','😡','👍','❤️','🎉','🔥','🌟','💯','🙌'];
+
+let isMaximized = false;
+let isDarkMode = false;
+let originalSize = { width: '600px', height: '500px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+
+fileMenu.addEventListener('change', (e) => {
+  if (e.target.value === 'reset') {
+    chatArea.innerHTML = '';
+    e.target.value = 'File';
+  }
+});
+
+actionsMenu.addEventListener('change', (e) => {
+  if (e.target.value === 'invite') {
+    addMessage('System', 'You invited a contact to the conversation.', true);
+  } else if (e.target.value === 'block') {
+    addMessage('System', 'You blocked the contact.', true);
+  } else if (e.target.value === 'enableBlaze') {
+    blazeEnabled = true;
+    addMessage('System', 'Blaze AI has been enabled.', true);
+  }
+  e.target.value = 'Actions';
+});
+
+optionsMenu.addEventListener('change', (e) => {
+  if (e.target.value === 'setUsername') {
+    const newUsername = prompt('Enter your username:');
+    if (newUsername) {
+      const oldUsername = username;
+      const cleanNewUsername = profanityCleaner.clean(sanitizeInput(newUsername), { keepFirstAndLastChar: true, exceptions: exceptions });
+      username = cleanNewUsername;
+      localStorage.setItem('nostalgiachat_username', username);
+      sendMessage(`NostalgiaChat_usernamechange_${oldUsername}_${username}`);
+    }
+  } else if (e.target.value === 'purgeMessages') {
+    const password = prompt('Enter the password to purge all messages:');
+    if (password === '1035') {
+      chat.map().once((msg, id) => {
+        if (msg) {
+          chat.get(id).put(null);
+        }
+      });
+      addMessage('System', 'All messages have been purged. The page will now reload.', true);
+      setTimeout(() => window._doy3isilfi.reload(), 3000);
+    } else {
+      addMessage('System', 'Incorrect password. Messages were not purged.', true);
+    }
+  }
+  e.target.value = 'Options';
+});
+
+darkModeButton.addEventListener('click', () => {
+  isDarkMode = !isDarkMode;
+  document.body.classList.toggle('dark-mode', isDarkMode);
+  messenger.classList.toggle('dark-mode', isDarkMode);
+  changelogWindow.classList.toggle('dark-mode', isDarkMode);
+  infoWindow.classList.toggle('dark-mode', isDarkMode);
+  darkModeButton.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+});
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "Header")) {
+    document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
+  } else {
+    elmnt.querySelector('.title-bar').onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+dragElement(messenger);
+dragElement(changelogWindow);
+dragElement(infoWindow);
+
+minimizeButton.addEventListener('click', () => {
+  messenger.style.display = 'none';
+});
+
+maximizeButton.addEventListener('click', () => {
+  if (isMaximized) {
+    messenger.classList.remove('maximized');
+    Object.assign(messenger.style, originalSize);
+  } else {
+    originalSize = {
+      width: messenger.style.width,
+      height: messenger.style.height,
+      top: messenger.style.top,
+      left: messenger.style.left,
+      transform: messenger.style.transform
+    };
+    messenger.classList.add('maximized');
+    messenger.style.width = '100%';
+    messenger.style.height = '100%';
+    messenger.style.top = '0';
+    messenger.style.left = '0';
+    messenger.style.transform = 'none';
+  }
+  isMaximized = !isMaximized;
+});
+
+closeButton.addEventListener('click', () => {
+  messenger.style.display = 'none';
+});
+
+closeChangelogButton.addEventListener('click', () => {
+  changelogWindow.style.display = 'none';
+});
+
+closeInfoButton.addEventListener('click', () => {
+  infoWindow.style.display = 'none';
+});
+</script>
+</body></html>
