@@ -12,19 +12,19 @@
   <div class="menu-bar" w-tid="27">
     <select id="fileMenu" w-tid="28">
       <option w-tid="29">File</option>
-      <option value="invite" w-tid="33">An Option Here</option>
+      <option value="invite" w-tid="33">An Option Goes Here</option>
     </select>
     <select id="actionsMenu" w-tid="31">
       <option w-tid="32">Actions</option>
-      <option value="invite" w-tid="33">An Option Here</option>
+      <option value="invite" w-tid="33">An Option Goes Here</option>
     </select>
     <select id="optionsMenu" w-tid="36">
       <option w-tid="37">Options</option>
-      <option value="invite" w-tid="33">An Option Here</option>
+      <option value="invite" w-tid="33">An Option Goes Here</option>
     </select>
   </div>
   <div class="toolbar" w-tid="40">
-    <button id="darkModeButton" title="Toggle Dark Mode" w-tid="43">🌙 Dark Mode</button>
+    <button id="darkModeButton" title="Toggle Dark Mode" w-tid="43">Dark Mode</button>
   </div>
   </div>
 </div>
