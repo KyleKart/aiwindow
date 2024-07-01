@@ -22,57 +22,9 @@ const typingIndicator = document.getElementById('typingIndicator');
 const infoWindow = document.getElementById('infoWindow');
 const closeInfoButton = document.getElementById('closeInfoButton');
 
-const emoticons = ['😊','😂','😍','😎','😘','🤔','😢','😡','👍','❤️','🎉','🔥','🌟','💯','🙌'];
-
 let isMaximized = false;
 let isDarkMode = false;
 let originalSize = { width: '600px', height: '500px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
-
-fileMenu.addEventListener('change', (e) => {
-  if (e.target.value === 'reset') {
-    chatArea.innerHTML = '';
-    e.target.value = 'File';
-  }
-});
-
-actionsMenu.addEventListener('change', (e) => {
-  if (e.target.value === 'invite') {
-    addMessage('System', 'You invited a contact to the conversation.', true);
-  } else if (e.target.value === 'block') {
-    addMessage('System', 'You blocked the contact.', true);
-  } else if (e.target.value === 'enableBlaze') {
-    blazeEnabled = true;
-    addMessage('System', 'Blaze AI has been enabled.', true);
-  }
-  e.target.value = 'Actions';
-});
-
-optionsMenu.addEventListener('change', (e) => {
-  if (e.target.value === 'setUsername') {
-    const newUsername = prompt('Enter your username:');
-    if (newUsername) {
-      const oldUsername = username;
-      const cleanNewUsername = profanityCleaner.clean(sanitizeInput(newUsername), { keepFirstAndLastChar: true, exceptions: exceptions });
-      username = cleanNewUsername;
-      localStorage.setItem('nostalgiachat_username', username);
-      sendMessage(`NostalgiaChat_usernamechange_${oldUsername}_${username}`);
-    }
-  } else if (e.target.value === 'purgeMessages') {
-    const password = prompt('Enter the password to purge all messages:');
-    if (password === '1035') {
-      chat.map().once((msg, id) => {
-        if (msg) {
-          chat.get(id).put(null);
-        }
-      });
-      addMessage('System', 'All messages have been purged. The page will now reload.', true);
-      setTimeout(() => window._doy3isilfi.reload(), 3000);
-    } else {
-      addMessage('System', 'Incorrect password. Messages were not purged.', true);
-    }
-  }
-  e.target.value = 'Options';
-});
 
 darkModeButton.addEventListener('click', () => {
   isDarkMode = !isDarkMode;
@@ -81,28 +33,6 @@ darkModeButton.addEventListener('click', () => {
   changelogWindow.classList.toggle('dark-mode', isDarkMode);
   infoWindow.classList.toggle('dark-mode', isDarkMode);
   darkModeButton.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
-});
-
-maximizeButton.addEventListener('click', () => {
-  if (isMaximized) {
-    windowMain.classList.remove('maximized');
-    Object.assign(windowMain.style, originalSize);
-  } else {
-    originalSize = {
-      width: windowMain.style.width,
-      height: windowMain.style.height,
-      top: windowMain.style.top,
-      left: windowMain.style.left,
-      transform: windowMain.style.transform
-    };
-    windowMain.classList.add('maximized');
-    windowMain.style.width = '100%';
-    windowMain.style.height = '100%';
-    windowMain.style.top = '0';
-    windowMain.style.left = '0';
-    windowMain.style.transform = 'none';
-  }
-  isMaximized = !isMaximized;
 });
 </script>
 </body></html>
